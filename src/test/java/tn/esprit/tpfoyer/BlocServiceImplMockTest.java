@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @TestMethodOrder(OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
-public class BlocServiceImplMockTest {
+class BlocServiceImplMockTest {
 
     @Mock
     BlocRepository blocRepository;
@@ -39,7 +39,7 @@ public class BlocServiceImplMockTest {
 
     @Test
     @Order(1)
-    public void testRetrieveBloc() {
+    void testRetrieveBloc() {
         Mockito.when(blocRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(bloc));
         Bloc bloc1 = blocService.retrieveBloc(1L);
         Assertions.assertNotNull(bloc1);
@@ -47,7 +47,7 @@ public class BlocServiceImplMockTest {
 
     @Test
     @Order(2)
-    public void testRetrieveAllBlocs() {
+    void testRetrieveAllBlocs() {
         Mockito.when(blocRepository.findAll()).thenReturn(listBlocs);
         List<Bloc> listB = blocService.retrieveAllBlocs();
         Assertions.assertEquals(2, listB.size());
@@ -55,12 +55,16 @@ public class BlocServiceImplMockTest {
 
     @Test
     @Order(3)
-    public void testAddBloc() {
-        Mockito.when(blocRepository.save(Mockito.any()))
-                .thenReturn(listBlocs.add(bloc));
-
+    void testAddBloc() {
         Bloc b = new Bloc();
         b.setNomBloc("blocTest");
+
+        Mockito.when(blocRepository.save(Mockito.any(Bloc.class)))
+                .thenAnswer(invocation -> {
+                    Bloc savedBloc = invocation.getArgument(0);
+                    listBlocs.add(savedBloc);
+                    return savedBloc;
+                });
 
         blocService.addBloc(b);
 
