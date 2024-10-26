@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk-alpine
-EXPOSE 8082
-ADD Target/tpfoyer-devops-1.0.jar td.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM openjdk:17-jdk-alpine
+EXPOSE 8089
+ADD Target/tpfoyer-5.0.0.jar tpfoyer-5.0.0.jar
+ENTRYPOINT ["java","-jar","/tpfoyer-5.0.0.jar"]
