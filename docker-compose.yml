@@ -6,22 +6,22 @@ services:
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=
-      - MYSQL_DATABASE=timesheet_db
+      - MYSQL_DATABASE=tpfoyer
     ports:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-  app-timesheet:
+  app-tpfoyer:
     depends_on:
       - mysqldb
-    image: mouradhassini/timesheet-devops:1.0.0
+    image: rihem/tpfoyer:1.0.0
     #build : ./
     restart: on-failure
     ports:
       - 8082:8082
     environment:
       SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/timesheet_db?createDatabaseIfNotExist=true",
+        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/tpfoyer_db?createDatabaseIfNotExist=true",
         "spring.datasource.username" : "root",
         "spring.datasource.password" : null,
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
