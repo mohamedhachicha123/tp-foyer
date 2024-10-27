@@ -1,34 +1,35 @@
-version: "3.8"
-
+version: '2.29.7'
 services:
-  mysqldb:
-    image: mysql:5.7
-    restart: unless-stopped
+  db-mysql:
+    image: mysql:8.3
+    container_name: db-mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_DATABASE=tpfoyer
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: db
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - db:/var/lib/mysql
-  app-tpfoyer:
+
+  tpfoyer-backend:
     depends_on:
-      - mysqldb
-    image: rihem/tpfoyer:1.0.0
-    #build : ./
-    restart: on-failure
+      - db-mysql
+    image: rihemtaieb/tp-foyer:1.0.0
     ports:
-      - 8082:8082
+      - "8082:8082"
     environment:
       SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/tpfoyer_db?createDatabaseIfNotExist=true",
-        "spring.datasource.username" : "root",
-        "spring.datasource.password" : null,
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"
+        "spring.datasource.url": "jdbc:mysql://db-mysql:3306/db?createDatabaseIfNotExist=true&useSSL=false",
+        "spring.datasource.username": "root",
+        "spring.datasource.password": null,
+        "spring.jpa.show-sql": "true",
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL8Dialect",
+        "server.port": 8089,
+        "server.servlet.context-path": "/tpfoyer"
       }'
-    stdin_open: true
-    tty: true
+      stdin_open: true
+      tty: true
 
 volumes:
-  db :
+  db:
