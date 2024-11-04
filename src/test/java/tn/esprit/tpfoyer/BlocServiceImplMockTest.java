@@ -28,11 +28,11 @@ class BlocServiceImplMockTest {
     @InjectMocks
     BlocServiceImpl blocService;
 
-    Bloc bloc = new Bloc("bloc1", 5L);
+    Bloc bloc = new Bloc(1L, "bloc1", 5L);
     List<Bloc> listBlocs = new ArrayList<>() {
         {
-            add(new Bloc("bloc2", 5L));
-            add(new Bloc("bloc3", 5L));
+            add(new Bloc(2L, "bloc2", 5L));
+            add(new Bloc(3L, "bloc3", 5L));
 
         }
     };
@@ -67,8 +67,26 @@ class BlocServiceImplMockTest {
                 });
 
         blocService.addBloc(b);
-
+        //System.out.println("logging in testaddbloc: " + listBlocs.size());
         Assertions.assertEquals(3, listBlocs.size());
+    }
+
+    @Test
+    @Order(4)
+    void testRemoveBloc() {
+        //System.out.println("logging in testremovebloc: " + listBlocs.size());
+
+        Mockito.doAnswer(invocation -> {
+            Long id = invocation.getArgument(0);
+            listBlocs.removeIf(b-> b.getIdBloc() == id);
+            return null;
+        }).when(blocRepository).deleteById(listBlocs.get(0).getIdBloc());
+
+        Bloc b = new Bloc();
+        b.setIdBloc(listBlocs.get(0).getIdBloc());
+
+        blocService.removeBloc(b.getIdBloc());
+        Assertions.assertEquals(1, listBlocs.size());
     }
 
 }

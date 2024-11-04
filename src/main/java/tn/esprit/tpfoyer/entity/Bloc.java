@@ -33,7 +33,8 @@ public class Bloc {
     @ToString.Exclude
     Set<Chambre> chambres = new HashSet<Chambre>();
 
-public Bloc(String nomBloc, long capaciteBloc) {
+public Bloc(Long idBloc, String nomBloc, long capaciteBloc) {
+    this.idBloc = idBloc;
     this.nomBloc = nomBloc;
     this.capaciteBloc = capaciteBloc;
 }
