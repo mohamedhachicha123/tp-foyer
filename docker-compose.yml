@@ -1,5 +1,3 @@
-version: "2.29.7"
-
 services:
   mysqldb:
     image: mysql:8.0
@@ -28,11 +26,5 @@ services:
       }'
     stdin_open: true
     tty: true
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - 9090:9090
-
-
 volumes:
   db :
