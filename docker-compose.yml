@@ -11,8 +11,6 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
-    networks:
-      - tpfoyer-network
   app-tpfoyer:
     depends_on:
       - mysqldb
@@ -33,8 +31,6 @@ services:
       }'
     stdin_open: true
     tty: true
-    networks:
-      - tpfoyer-network
 
 volumes:
   db :
