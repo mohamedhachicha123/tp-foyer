@@ -67,14 +67,12 @@ class BlocServiceImplMockTest {
                 });
 
         blocService.addBloc(b);
-        //System.out.println("logging in testaddbloc: " + listBlocs.size());
         Assertions.assertEquals(3, listBlocs.size());
     }
 
     @Test
     @Order(4)
     void testRemoveBloc() {
-        //System.out.println("logging in testremovebloc: " + listBlocs.size());
 
         Mockito.doAnswer(invocation -> {
             Long id = invocation.getArgument(0);
