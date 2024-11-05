@@ -11,6 +11,8 @@ services:
       - 3306:3306
     volumes:
       - db:/var/lib/mysql
+    networks:
+      - tpfoyer-network
   app-tpfoyer:
     depends_on:
       - mysqldb
@@ -24,10 +26,15 @@ services:
         "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/tpfoyer_db?createDatabaseIfNotExist=true",
         "spring.datasource.username" : "root",
         "spring.datasource.password" : "root",
-        "spring.jpa.hibernate.ddl-auto" : "update"
+        "spring.jpa.hibernate.ddl-auto" : "update",
+        "management.endpoints.web.exposure.include" : "*",
+        "management.endpoint.prometheus.enabled" : "true",
+        "management.endpoints.web.base-path" : "/actuator"
       }'
     stdin_open: true
     tty: true
+    networks:
+      - tpfoyer-network
 
 volumes:
   db :
